@@ -10,9 +10,9 @@ HOMEPAGE="https://store.kde.org/p/998915/
 https://github.com/kotelnik/plasma-applet-thermal-monitor"
 
 if [[ ${KDE_BUILD_TYPE} = live ]] ; then
-    EGIT_REPO_URI="https://github.com/kotelnik/${PN}.git"
+	EGIT_REPO_URI="https://github.com/kotelnik/${PN}.git"
 else
-    SRC_URI="https://github.com/kotelnik/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/kotelnik/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 fi
 
 LICENSE="GPL-2+"
