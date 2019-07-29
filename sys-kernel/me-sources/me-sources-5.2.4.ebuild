@@ -4,7 +4,7 @@
 EAPI=6
 ETYPE="sources"
 K_WANT_GENPATCHES="base extras experimental"
-K_GENPATCHES_VER="18"
+K_GENPATCHES_VER="5"
 
 inherit kernel-2
 detect_version
@@ -20,7 +20,7 @@ K_BRANCH_ID="${KV_MAJOR}.${KV_MINOR}"
 DESCRIPTION="Gentoo's genpatches for Linux ${K_BRANCH_ID}, including various other patches."
 
 # MuQSS patchset
-MUQSS_VERSION="192"
+MUQSS_VERSION="193"
 MUQSS_FILE="0001-MultiQueue-Skiplist-Scheduler-version-0.${MUQSS_VERSION}.patch"
 MUQSS_BASE_URL="http://ck.kolivas.org/patches/muqss/${KV_MAJOR}.0"
 MUQSS_DISTNAME="${PN}-${K_BRANCH_ID}-muqss.patch"
