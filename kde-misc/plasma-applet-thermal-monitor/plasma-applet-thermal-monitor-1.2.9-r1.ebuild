@@ -26,3 +26,8 @@ DEPEND="
 RDEPEND="${DEPEND}"
 
 DOCS=( README.md )
+
+src_prepare() {
+	local PATCHES=("${FILESDIR}/01-set-correct-qml-type.patch")
+	cmake-utils_src_prepare
+}
