@@ -4,7 +4,7 @@
 EAPI=6
 ETYPE="sources"
 K_WANT_GENPATCHES="base extras experimental"
-K_GENPATCHES_VER="14"
+K_GENPATCHES_VER="16"
 
 inherit kernel-2
 detect_version
@@ -31,7 +31,11 @@ O3_ZEN_DISTNAME="${PN}-${K_BRANCH_ID}-o3-zen.patch"
 
 SRC_URI="${KERNEL_URI} ${GENPATCHES_URI} ${ARCH_URI} ${MUQSS_URI}"
 
-UNIPATCH_LIST="${DISTDIR}/${MUQSS_DISTNAME} ${FILESDIR}/${O3_ZEN_DISTNAME}"
+UNIPATCH_LIST="
+	${DISTDIR}/${MUQSS_DISTNAME}
+	${FILESDIR}/${O3_ZEN_DISTNAME}
+	${FILESDIR}/enable-amdgpu-lru-bulk-moves.patch
+"
 UNIPATCH_STRICTORDER="yes"
 
 pkg_postrm() {
