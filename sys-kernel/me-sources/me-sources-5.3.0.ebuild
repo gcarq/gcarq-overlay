@@ -21,6 +21,9 @@ DESCRIPTION="Gentoo's genpatches for Linux ${K_BRANCH_ID}, including various oth
 SRC_URI="${KERNEL_URI} ${GENPATCHES_URI} ${ARCH_URI}"
 
 UNIPATCH_LIST="
+	${FILESDIR}/1-3-drm-amd-display-Allow-cursor-async-updates-for-framebuffer-swaps.patch
+	${FILESDIR}/2-3-drm-amd-display-Skip-determining-update-type-for-async-updates.patch
+	${FILESDIR}/3-3-drm-amd-display-Don-t-replace-the-dc_state-for-fast-updates.patch
 	${FILESDIR}/o3-zen.patch
 	${FILESDIR}/enable-amdgpu-lru-bulk-moves.patch
 "
