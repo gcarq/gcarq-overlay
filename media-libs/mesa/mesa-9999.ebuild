@@ -226,7 +226,7 @@ QA_WX_LOAD="
 x86? (
 	!pic? (
 		usr/lib*/libglapi.so.0.0.0
-		usr/lib*/libGLESv1_CM.so.1.0.0
+		usr/lib*/libGLESv1_CM.so.1.1.0
 		usr/lib*/libGLESv2.so.2.0.0
 		usr/lib*/libGL.so.1.2.0
 		usr/lib*/libOSMesa.so.8.0.0
