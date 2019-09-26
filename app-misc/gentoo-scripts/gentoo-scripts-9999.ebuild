@@ -16,6 +16,8 @@ IUSE=""
 
 DEPEND=""
 RDEPEND="
+	app-portage/portage-utils
+	app-portage/portpeek
 	sys-boot/grub
 	sys-devel/make
 	sys-kernel/dracut"
@@ -23,5 +25,7 @@ RDEPEND="
 DOCS=( README.md LICENSE.md )
 
 src_install() {
-	newbin update-kernel.sh update-kernel
+	newbin build-kernel.sh build-kernel
+	newbin resolve-rdeps.sh resolve-rdeps
+	newbin update-system.sh update-system
 }
