@@ -30,7 +30,6 @@ SRC_URI="${KERNEL_URI} ${GENPATCHES_URI} ${ARCH_URI} ${MUQSS_URI}"
 
 UNIPATCH_LIST="
 	${DISTDIR}/${MUQSS_DISTNAME}
-	${FILESDIR}/o3-zen.patch
 	${FILESDIR}/enable-amdgpu-lru-bulk-moves.patch
 "
 UNIPATCH_STRICTORDER="yes"

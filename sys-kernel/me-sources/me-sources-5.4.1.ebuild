@@ -4,7 +4,7 @@
 EAPI=6
 ETYPE="sources"
 K_WANT_GENPATCHES="base extras experimental"
-K_GENPATCHES_VER="12"
+K_GENPATCHES_VER="2"
 
 inherit kernel-2
 detect_version
@@ -20,10 +20,7 @@ DESCRIPTION="Gentoo's genpatches for Linux ${K_BRANCH_ID}, including various oth
 
 SRC_URI="${KERNEL_URI} ${GENPATCHES_URI} ${ARCH_URI}"
 
-UNIPATCH_LIST="
-	${FILESDIR}/o3-zen.patch
-	${FILESDIR}/enable-amdgpu-lru-bulk-moves.patch
-"
+UNIPATCH_LIST=""
 UNIPATCH_STRICTORDER="yes"
 
 pkg_postrm() {
