@@ -21,6 +21,7 @@ DESCRIPTION="Gentoo's genpatches for Linux ${K_BRANCH_ID}, including various oth
 SRC_URI="${KERNEL_URI} ${GENPATCHES_URI} ${ARCH_URI}"
 
 UNIPATCH_LIST="
+    ${FILESDIR}/0000-futex-wait-multiple-5.2.1.patch
     ${FILESDIR}/0001-MultiQueue-Skiplist-Scheduler-v0.196.patch
 "
 UNIPATCH_STRICTORDER="yes"
