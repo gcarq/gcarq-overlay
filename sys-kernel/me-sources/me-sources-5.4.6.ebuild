@@ -20,7 +20,9 @@ DESCRIPTION="Gentoo's genpatches for Linux ${K_BRANCH_ID}, including various oth
 
 SRC_URI="${KERNEL_URI} ${GENPATCHES_URI} ${ARCH_URI}"
 
-UNIPATCH_LIST=""
+UNIPATCH_LIST="
+    ${FILESDIR}/0001-MultiQueue-Skiplist-Scheduler-v0.196.patch
+"
 UNIPATCH_STRICTORDER="yes"
 
 pkg_postrm() {
