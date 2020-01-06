@@ -23,6 +23,10 @@ SRC_URI="${KERNEL_URI} ${GENPATCHES_URI} ${ARCH_URI}"
 UNIPATCH_LIST="
     ${FILESDIR}/0000-futex-wait-multiple-5.2.1.patch
     ${FILESDIR}/0001-MultiQueue-Skiplist-Scheduler-v0.196.patch
+    ${FILESDIR}/0005-ksm-wakeups.patch
+    ${FILESDIR}/0008-smpboot-reuse-timer-calibration.patch
+    ${FILESDIR}/0012-ipv4-tcp-allow-the-memory-tuning-for-tcp-to-go-a-lit.patch
+    ${FILESDIR}/0013-kernel-time-reduce-ntp-wakeups.patch
 "
 UNIPATCH_STRICTORDER="yes"
 
