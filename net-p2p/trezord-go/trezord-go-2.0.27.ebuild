@@ -18,7 +18,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 RESTRICT="test"
 
-DEPEND="acct-user/trezor
+DEPEND="acct-user/trezord
 	acct-group/plugdev"
 
 src_install() {
