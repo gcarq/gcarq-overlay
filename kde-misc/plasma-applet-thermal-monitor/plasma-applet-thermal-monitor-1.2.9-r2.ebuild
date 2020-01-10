@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit kde5
+inherit kde5 cmake-utils
 
 DESCRIPTION="Plasma 5 applet for monitoring CPU, GPU and other available temperature sensors"
 HOMEPAGE="https://store.kde.org/p/998915/
