@@ -4,7 +4,7 @@
 EAPI=6
 ETYPE="sources"
 K_WANT_GENPATCHES="base extras experimental"
-K_GENPATCHES_VER="5"
+K_GENPATCHES_VER="6"
 
 inherit kernel-2
 detect_version
@@ -22,8 +22,8 @@ SRC_URI="${KERNEL_URI} ${GENPATCHES_URI} ${ARCH_URI}"
 
 UNIPATCH_LIST="
 	"${FILESDIR}/0000-futex-wait-multiple-5.2.1.patch"
-	"${FILESDIR}/0001-cpu-5.4-make-O3-always-available.patch"
 	"${FILESDIR}/0001-MultiQueue-Skiplist-Scheduler-v0.198.patch"
+	"${FILESDIR}/0002-init-Kconfig-enable-O3-for-all-arches.patch"
 	"${FILESDIR}/0013-Reinstate-default-Hz-of-100-in-combination-with-MuQS.patch"
 	"${FILESDIR}/0005-ksm-wakeups.patch"
 	"${FILESDIR}/0008-smpboot-reuse-timer-calibration.patch"
