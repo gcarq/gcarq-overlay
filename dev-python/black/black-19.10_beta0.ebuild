@@ -27,9 +27,7 @@ RDEPEND="
 	>=dev-python/toml-0.9.4[${PYTHON_USEDEP}]
 	>=dev-python/typed-ast-1.4.0[${PYTHON_USEDEP}]
 	>=dev-python/typing-extensions-3.7.4[${PYTHON_USEDEP}]
-	python_targets_python3_6? (
-		>=dev-python/dataclasses-0.6[python_targets_python3_6?]
-	)
+	$(python_gen_cond_dep 'dev-python/dataclasses[${PYTHON_USEDEP}]' python3_6)
 "
 DEPEND="${RDEPEND}
 	dev-python/setuptools[${PYTHON_USEDEP}]
