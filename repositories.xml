@@ -4,7 +4,7 @@
   <repo quality="experimental" status="unofficial">
     <name>gcarq</name>
     <description lang="en">Personal overlay</description>
-    <homepage>http://github.com/gcarq/gcarq-overlay</homepage>
+    <homepage>https://github.com/gcarq/gcarq-overlay</homepage>
     <owner type="person">
       <email>michael.egger@tsn.at</email>
       <name>Michael Egger</name>
