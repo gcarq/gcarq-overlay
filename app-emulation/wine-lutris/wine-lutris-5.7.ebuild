@@ -19,14 +19,17 @@ GWP_V="20191222"
 PATCHDIR="${WORKDIR}/gentoo-wine-patches"
 
 DESCRIPTION="Free implementation of Windows(tm) on Unix (lutris fork)"
-HOMEPAGE="https://www.winehq.org/"
+HOMEPAGE="
+	https://www.winehq.org/
+	https://github.com/lutris/wine/
+"
 SRC_URI="${SRC_URI}
 	https://dev.gentoo.org/~sarnex/distfiles/wine/gentoo-wine-patches-${GWP_V}.tar.xz
 "
 
 LICENSE="LGPL-2.1"
 SLOT="${PV}"
-IUSE="+abi_x86_32 +abi_x86_64 +alsa capi cups custom-cflags dos elibc_glibc +faudio +fontconfig +gcrypt +gecko gphoto2 gsm gssapi gstreamer +jpeg kerberos kernel_FreeBSD +lcms ldap +mono mp3 ncurses netapi nls odbc openal opencl +opengl osmesa oss +perl pcap pipelight +png prelink pulseaudio +realtime +run-exes samba scanner sdl selinux +ssl staging test themes +threads +truetype udev +udisks +unwind v4l vaapi vkd3d vulkan +X +xcomposite xinerama +xml"
+IUSE="+abi_x86_32 +abi_x86_64 +alsa capi cups custom-cflags dos elibc_glibc +faudio +fontconfig +gcrypt +gecko gphoto2 gsm gssapi gstreamer +jpeg kerberos kernel_FreeBSD +lcms ldap +mono mp3 ncurses netapi nls odbc openal opencl +opengl osmesa oss +perl pcap pipelight +png prelink pulseaudio +realtime +run-exes samba scanner sdl selinux +ssl test themes +threads +truetype udev +udisks +unwind v4l vaapi vkd3d vulkan +X +xcomposite xinerama +xml"
 REQUIRED_USE="|| ( abi_x86_32 abi_x86_64 )
 	X? ( truetype )
 	elibc_glibc? ( threads )
@@ -100,7 +103,8 @@ COMMON_DEPEND="
 	xml? (
 		dev-libs/libxml2[${MULTILIB_USEDEP}]
 		dev-libs/libxslt[${MULTILIB_USEDEP}]
-	)"
+	)
+	sys-apps/attr[${MULTILIB_USEDEP}]"
 
 RDEPEND="${COMMON_DEPEND}
 	app-emulation/wine-desktop-common
@@ -108,7 +112,7 @@ RDEPEND="${COMMON_DEPEND}
 	!app-emulation/wine:0
 	dos? ( >=games-emulation/dosbox-0.74_p20160629 )
 	gecko? ( app-emulation/wine-gecko:2.47.1[abi_x86_32?,abi_x86_64?] )
-	mono? ( app-emulation/wine-mono:4.9.4 )
+	mono? ( app-emulation/wine-mono:5.0.0 )
 	perl? (
 		dev-lang/perl
 		dev-perl/XML-Simple
@@ -140,7 +144,6 @@ usr/share/applications/wine-winecfg.desktop"
 PATCHES=(
 	"${PATCHDIR}/patches/${MY_PN}-5.0-winegcc.patch" #260726
 	"${PATCHDIR}/patches/${MY_PN}-4.7-multilib-portage.patch" #395615
-	"${PATCHDIR}/patches/${MY_PN}-5.0-memset-O3.patch" #480508
 	"${PATCHDIR}/patches/${MY_PN}-2.0-multislot-apploader.patch" #310611
 )
 PATCHES_BIN=()
@@ -149,24 +152,6 @@ PATCHES_BIN=()
 if [[ ${#PATCHES_BIN[@]} -ge 1 ]]; then
 	DEPEND+=" dev-util/patchbin"
 fi
-
-wine_compiler_check() {
-	[[ ${MERGE_TYPE} = "binary" ]] && return 0
-
-	# Ensure compiler support
-	if use abi_x86_64; then
-		ebegin "Checking for 64-bit compiler with builtin_ms_va_list support"
-		# Compile in subshell to prevent "Aborted" message
-		( $(tc-getCC) -O2 "${PATCHDIR}/files/builtin_ms_va_list.c" -o "${T}"/builtin_ms_va_list >/dev/null 2>&1)
-		if ! eend $?; then
-			eerror "This version of $(tc-getCC) does not support builtin_ms_va_list, can't enable 64-bit wine"
-			eerror
-			eerror "You need gcc-4.4+ or clang 3.8+ to build 64-bit wine"
-			eerror
-			return 1
-		fi
-	fi
-}
 
 wine_build_environment_check() {
 	[[ ${MERGE_TYPE} = "binary" ]] && return 0
@@ -275,8 +260,6 @@ src_prepare() {
 }
 
 src_configure() {
-	wine_compiler_check || die
-
 	export LDCONFIG=/bin/true
 	use custom-cflags || strip-flags
 
@@ -345,6 +328,7 @@ multilib_src_configure() {
 		$(use_with xml xslt)
 		$(use_with themes gtk3)
 		$(use_with vaapi va)
+		--with-xattr
 	)
 
 	local PKG_CONFIG AR RANLIB
