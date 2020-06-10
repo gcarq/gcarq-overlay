@@ -4,7 +4,7 @@
 EAPI=6
 ETYPE="sources"
 K_WANT_GENPATCHES="base extras experimental"
-K_GENPATCHES_VER="21"
+K_GENPATCHES_VER="2"
 
 inherit kernel-2
 detect_version
@@ -25,7 +25,7 @@ DESCRIPTION="Gentoo's genpatches for Linux ${K_BRANCH_ID}, including various oth
 SRC_URI="${KERNEL_URI} ${GENPATCHES_URI} ${ARCH_URI}"
 
 UNIPATCH_LIST="
-	"${FILESDIR}/0001-5.6-ck1.patch"
+	"${FILESDIR}/ck-patches/*.patch"
 	"${FILESDIR}/clearlinux-patches/*.patch"
 	"${FILESDIR}/cpu-patches/*.patch"
 	"${FILESDIR}/futex-patches/*.patch"

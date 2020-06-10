@@ -1,47 +1,46 @@
-From 8d05e58c63d49583e66fc2b28e684ad08d434e26 Mon Sep 17 00:00:00 2001
+From c8bd74d3bf873ecd3e412f90b339f1ddcd40ace2 Mon Sep 17 00:00:00 2001
 From: Andy Lutomirski <luto@kernel.org>
-Date: Mon, 11 May 2020 00:53:04 -0400
-Subject: [PATCH 11/18] x86/fsgsbase/64: Use FSGSBASE in switch_to() if
+Date: Thu, 28 May 2020 16:13:51 -0400
+Subject: [PATCH 05/16] x86/process/64: Use FSBSBASE in switch_to() if
  available
 
-With the new FSGSBASE instructions, FS/GS base can be efficiently read
-and written in __switch_to(). Use that capability to preserve the full
+With the new FSGSBASE instructions, FS and GSABSE can be efficiently read
+and writen in __switch_to().  Use that capability to preserve the full
 state.
 
 This will enable user code to do whatever it wants with the new
 instructions without any kernel-induced gotchas.  (There can still be
-architectural gotchas: movl %gs,%eax; movl %eax,%gs may change GS base
-if WRGSBASE was used, but users are expected to read the CPU manual
-before doing things like that.)
+architectural gotchas: movl %gs,%eax; movl %eax,%gs may change GSBASE if
+WRGSBASE was used, but users are expected to read the CPU manual before
+doing things like that.)
 
-This is a considerable speedup. It seems to save about 100 cycles per
-context switch compared to the baseline 4.6-rc1 behavior on a Skylake
-laptop.
+This is a considerable speedup.  It seems to save about 100 cycles
+per context switch compared to the baseline 4.6-rc1 behavior on a
+Skylake laptop.
 
-[ chang: 5~10% performance improvements were seen by a context switch
-  benchmark that ran threads with different FS/GS base values (to the
-  baseline 4.16). ]
+[ chang: 5~10% performance improvements were seen with a context switch
+  benchmark that ran threads with different FS/GSBASE values (to the
+  baseline 4.16). Minor edit on the changelog. ]
+
+[ tglx: Masaage changelog ]
 
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Cc: Ravi Shankar <ravi.v.shankar@intel.com>
 Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
+Link: https://lkml.kernel.org/r/1557309753-24073-8-git-send-email-chang.seok.bae@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  arch/x86/kernel/process_64.c | 34 ++++++++++++++++++++++++++++------
  1 file changed, 28 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index da52ada1d1c2..d5462bbf2318 100644
+index 0624689825a3..85c7f9cabde2 100644
 --- a/arch/x86/kernel/process_64.c
 +++ b/arch/x86/kernel/process_64.c
-@@ -200,8 +200,18 @@ static __always_inline void save_fsgs(struct task_struct *task)
+@@ -233,8 +233,18 @@ static __always_inline void save_fsgs(struct task_struct *task)
  {
  	savesegment(fs, task->thread.fsindex);
  	savesegment(gs, task->thread.gsindex);
@@ -54,7 +53,7 @@ index da52ada1d1c2..d5462bbf2318 100644
 +		 * value.  Fortunately, reading the base directly is efficient.
 +		 */
 +		task->thread.fsbase = rdfsbase();
-+		task->thread.gsbase = x86_gsbase_read_cpu_inactive();
++		task->thread.gsbase = __rdgsbase_inactive();
 +	} else {
 +		save_base_legacy(task, task->thread.fsindex, FS);
 +		save_base_legacy(task, task->thread.gsindex, GS);
@@ -62,7 +61,7 @@ index da52ada1d1c2..d5462bbf2318 100644
  }
  
  #if IS_ENABLED(CONFIG_KVM)
-@@ -280,10 +290,22 @@ static __always_inline void load_seg_legacy(unsigned short prev_index,
+@@ -313,10 +323,22 @@ static __always_inline void load_seg_legacy(unsigned short prev_index,
  static __always_inline void x86_fsgsbase_load(struct thread_struct *prev,
  					      struct thread_struct *next)
  {
@@ -79,7 +78,7 @@ index da52ada1d1c2..d5462bbf2318 100644
 +
 +		/* Update the bases. */
 +		wrfsbase(next->fsbase);
-+		x86_gsbase_write_cpu_inactive(next->gsbase);
++		__wrgsbase_inactive(next->gsbase);
 +	} else {
 +		load_seg_legacy(prev->fsindex, prev->fsbase,
 +				next->fsindex, next->fsbase, FS);
@@ -90,5 +89,5 @@ index da52ada1d1c2..d5462bbf2318 100644
  
  static unsigned long x86_fsgsbase_read_task(struct task_struct *task,
 -- 
-2.26.2.533.gb34789c0b0
+2.27.0.rc2
 

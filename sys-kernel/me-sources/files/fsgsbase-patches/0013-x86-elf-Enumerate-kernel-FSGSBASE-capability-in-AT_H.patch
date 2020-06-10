@@ -1,7 +1,7 @@
-From da7fac35812329f6222cdaef27f8296e0be021e9 Mon Sep 17 00:00:00 2001
+From 8629d9900de1a92d1c1b02d3be28453590f71477 Mon Sep 17 00:00:00 2001
 From: Andi Kleen <ak@linux.intel.com>
-Date: Mon, 11 May 2020 00:53:10 -0400
-Subject: [PATCH 17/18] x86/elf: Enumerate kernel FSGSBASE capability in
+Date: Thu, 28 May 2020 16:13:59 -0400
+Subject: [PATCH 13/16] x86/elf: Enumerate kernel FSGSBASE capability in
  AT_HWCAP2
 
 The kernel needs to explicitly enable FSGSBASE. So, the application needs
@@ -19,17 +19,16 @@ aux vector. AT_HWCAP2 is already used by PPC for similar purposes.
 The application can access it open coded or by using the getauxval()
 function in newer versions of glibc.
 
+[ tglx: Massaged changelog ]
+
 Signed-off-by: Andi Kleen <ak@linux.intel.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Ravi Shankar <ravi.v.shankar@intel.com>
 Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
+Link: https://lkml.kernel.org/r/1557309753-24073-18-git-send-email-chang.seok.bae@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  arch/x86/include/uapi/asm/hwcap2.h | 3 +++
  arch/x86/kernel/cpu/common.c       | 4 +++-
@@ -48,10 +47,10 @@ index 8b2effe6efb8..5fdfcb47000f 100644
 +
  #endif
 diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index d3e05d813c24..24de11514d11 100644
+index 0d480cbadc7d..b5a086ea3425 100644
 --- a/arch/x86/kernel/cpu/common.c
 +++ b/arch/x86/kernel/cpu/common.c
-@@ -1493,8 +1493,10 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+@@ -1495,8 +1495,10 @@ static void identify_cpu(struct cpuinfo_x86 *c)
  	setup_umip(c);
  
  	/* Enable FSGSBASE instructions if available. */
@@ -64,5 +63,5 @@ index d3e05d813c24..24de11514d11 100644
  	/*
  	 * The vendor-specific functions might have changed features.
 -- 
-2.26.2.533.gb34789c0b0
+2.27.0.rc2
 

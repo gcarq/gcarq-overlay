@@ -1,7 +1,7 @@
-From 36cd066839a407b3d756ea3974a3b8f41e06a67c Mon Sep 17 00:00:00 2001
+From ebb6a35bd516cd0d9534da82a74c7e2ccf7d66a4 Mon Sep 17 00:00:00 2001
 From: Andi Kleen <ak@linux.intel.com>
-Date: Mon, 11 May 2020 00:53:02 -0400
-Subject: [PATCH 09/18] x86/fsgsbase/64: Add intrinsics for FSGSBASE
+Date: Thu, 28 May 2020 16:13:49 -0400
+Subject: [PATCH 03/16] x86/fsgsbase/64: Add intrinsics for FSGSBASE
  instructions
 
 [ luto: Rename the variables from FS and GS to FSBASE and GSBASE and
@@ -11,17 +11,12 @@ Signed-off-by: Andi Kleen <ak@linux.intel.com>
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Reviewed-by: Andy Lutomirski <luto@kernel.org>
 Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Tony Luck <tony.luck@intel.com>
+Cc: Ravi Shankar <ravi.v.shankar@intel.com>
 Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Andi Kleen <ak@linux.intel.com>
+Link: https://lkml.kernel.org/r/1557309753-24073-6-git-send-email-chang.seok.bae@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  arch/x86/include/asm/fsgsbase.h | 30 ++++++++++++++++++++++++++++++
  1 file changed, 30 insertions(+)
@@ -68,5 +63,5 @@ index bca4c743de77..fdd1177499b4 100644
  
  static inline unsigned long x86_fsbase_read_cpu(void)
 -- 
-2.26.2.533.gb34789c0b0
+2.27.0.rc2
 

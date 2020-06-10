@@ -1,36 +1,35 @@
-From 5f079c4530d37b5a97e01f6f36e27261fbdf862d Mon Sep 17 00:00:00 2001
+From 33c1d170d9cd19e1f59eb06c8b09ba44fad8675c Mon Sep 17 00:00:00 2001
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
-Date: Mon, 11 May 2020 00:52:59 -0400
-Subject: [PATCH 06/18] x86/entry/64: Introduce the FIND_PERCPU_BASE macro
+Date: Thu, 28 May 2020 16:13:56 -0400
+Subject: [PATCH 10/16] x86/entry/64: Introduce the FIND_PERCPU_BASE macro
 
-GS base is used to find per-CPU data in the kernel. But when GS base is
+GSBASE is used to find per-CPU data in the kernel. But when GSBASE is
 unknown, the per-CPU base can be found from the per_cpu_offset table with a
 CPU NR.  The CPU NR is extracted from the limit field of the CPUNODE entry
 in GDT, or by the RDPID instruction. This is a prerequisite for using
 FSGSBASE in the low level entry code.
 
-Also, add the GAS-compatible RDPID macro as binutils 2.21 does not support
+Also, add the GAS-compatible RDPID macro as binutils 2.21 do not support
 it. Support is added in version 2.27.
+
+[ tglx: Massaged changelog ]
 
 Suggested-by: H. Peter Anvin <hpa@zytor.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: Andy Lutomirski <luto@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Tony Luck <tony.luck@intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Vegard Nossum <vegard.nossum@oracle.com>
+Cc: Ravi Shankar <ravi.v.shankar@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lkml.kernel.org/r/1557309753-24073-12-git-send-email-chang.seok.bae@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  arch/x86/entry/calling.h    | 34 ++++++++++++++++++++++++++++++++++
  arch/x86/include/asm/inst.h | 15 +++++++++++++++
  2 files changed, 49 insertions(+)
 
 diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index 0789e13ece90..0eb134e18b7a 100644
+index 1c7f13bb6728..1b95cdc19b18 100644
 --- a/arch/x86/entry/calling.h
 +++ b/arch/x86/entry/calling.h
 @@ -6,6 +6,7 @@
@@ -41,7 +40,7 @@ index 0789e13ece90..0eb134e18b7a 100644
  
  /*
  
-@@ -347,6 +348,39 @@ For 32-bit we have the following conventions - kernel is built with
+@@ -349,6 +350,39 @@ For 32-bit we have the following conventions - kernel is built with
  #endif
  .endm
  
@@ -57,7 +56,7 @@ index 0789e13ece90..0eb134e18b7a 100644
 +.endm
 +
 +/*
-+ * Fetch the per-CPU GS base value for this processor and put it in @reg.
++ * Fetch the per-CPU GSBASE value for this processor and put it in @reg.
 + * We normally use %gs for accessing per-CPU data, but we are setting up
 + * %gs here and obviously can not use %gs itself to access per-CPU data.
 + */
@@ -108,5 +107,5 @@ index f5a796da07f8..d063841a17e3 100644
  
  #endif
 -- 
-2.26.2.533.gb34789c0b0
+2.27.0.rc2
 

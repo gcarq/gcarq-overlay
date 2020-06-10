@@ -1,34 +1,31 @@
-From 82ae1f514c2d06d7d38af71cf62b8a27023657a2 Mon Sep 17 00:00:00 2001
+From 6879cf94d214b0c22dd637d9eb0fae3a57363c03 Mon Sep 17 00:00:00 2001
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
-Date: Mon, 11 May 2020 00:52:54 -0400
-Subject: [PATCH 01/18] x86/ptrace: Prevent ptrace from clearing the FS/GS
+Date: Thu, 28 May 2020 16:13:47 -0400
+Subject: [PATCH 01/16] x86/ptrace: Prevent ptrace from clearing the FS/GS
  selector
 
-When a ptracer writes a ptracee's FS/GS base with a different value, the
-selector is also cleared. While this behavior is incorrect as the selector
-should be preserved, most userspace applications did not notice that as
-they do not use non-zero segments to begin with.
+When a ptracer writes a ptracee's FS/GSBASE with a different value, the
+selector is also cleared. This behavior is not correct as the selector
+should be preserved.
 
-Instead, with this patch, when a tracee sets the base we will let it do
-so without clearing the selector.
+Update only the base value and leave the selector intact. To simplify the
+code further remove the conditional checking for the same value as this
+code is not performance critical.
 
-The change above means that a tracee that already has a selector set
-will fail in an attempt to set the base - the change won't stick and the
-value will be instead based on the value of the selector. As with the
-above, we haven't found userspace that would be affected by this change.
+The only recognizable downside of this change is when the selector is
+already nonzero on write. The base will be reloaded according to the
+selector. But the case is highly unexpected in real usages.
+
+[ tglx: Massage changelog ]
 
 Suggested-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-[sasha: rewrite commit message]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: "H . Peter Anvin" <hpa@zytor.com>
 Cc: Andi Kleen <ak@linux.intel.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Link: https://lkml.kernel.org/r/9040CFCD-74BD-4C17-9A01-B9B713CF6B10@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  arch/x86/kernel/ptrace.c | 17 ++---------------
  1 file changed, 2 insertions(+), 15 deletions(-)
@@ -66,5 +63,5 @@ index f0e1ddbc2fd7..cc56efb75d27 100644
  #endif
  	}
 -- 
-2.26.2.533.gb34789c0b0
+2.27.0.rc2
 
