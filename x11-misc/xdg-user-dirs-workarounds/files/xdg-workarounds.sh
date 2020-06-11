@@ -2,9 +2,9 @@
 # See https://wiki.archlinux.org/index.php/XDG_Base_Directory
 
 # Base XDG directories
-export XDG_CONFIG_HOME="${HOME}/.config"
-export XDG_CACHE_HOME="${HOME}/.cache"
-export XDG_DATA_HOME="${HOME}/.local/share"
+[ -z "${XDG_CONFIG_HOME}" ] && export XDG_CONFIG_HOME="${HOME}/.config"
+[ -z "${XDG_CACHE_HOME}" ] && export XDG_CACHE_HOME="${HOME}/.cache"
+[ -z "${XDG_DATA_HOME}" ] && export XDG_DATA_HOME="${HOME}/.local/share"
 
 # Program specific overrides
 export ANDROID_SDK_HOME="${XDG_CONFIG_HOME}/android"
