@@ -1,7 +1,7 @@
-From 5b10dd2885008e023b2ffc72e40e719cdf8d538c Mon Sep 17 00:00:00 2001
+From a50c828845a3f9fc3d087841a53e17c470e0dfcb Mon Sep 17 00:00:00 2001
 From: Andy Lutomirski <luto@kernel.org>
 Date: Thu, 28 May 2020 16:13:58 -0400
-Subject: [PATCH 12/16] x86/cpu: Enable FSGSBASE on 64bit by default and add a
+Subject: [PATCH 12/21] x86/cpu: Enable FSGSBASE on 64bit by default and add a
  chicken bit
 
 Now that FSGSBASE is fully supported, remove unsafe_fsgsbase, enable
@@ -21,7 +21,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 15 insertions(+), 20 deletions(-)
 
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index af3aaade195b..1924845c879c 100644
+index 588f4eb13..91f45239b 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
 @@ -3033,8 +3033,7 @@
@@ -35,7 +35,7 @@ index af3aaade195b..1924845c879c 100644
  	no_console_suspend
  			[HW] Never suspend the console
 diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 4224760c74e2..0d480cbadc7d 100644
+index 7e2954ba6..9d891f63b 100644
 --- a/arch/x86/kernel/cpu/common.c
 +++ b/arch/x86/kernel/cpu/common.c
 @@ -418,21 +418,21 @@ static void __init setup_cr_pinning(void)
@@ -72,7 +72,7 @@ index 4224760c74e2..0d480cbadc7d 100644
  
  /*
   * Protection Keys are not available in 32-bit mode.
-@@ -1495,12 +1495,8 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+@@ -1528,12 +1528,8 @@ static void identify_cpu(struct cpuinfo_x86 *c)
  	setup_umip(c);
  
  	/* Enable FSGSBASE instructions if available. */
@@ -88,5 +88,5 @@ index 4224760c74e2..0d480cbadc7d 100644
  	/*
  	 * The vendor-specific functions might have changed features.
 -- 
-2.27.0.rc2
+2.27.0.112.g101b3204f3
 

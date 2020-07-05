@@ -1,7 +1,7 @@
-From e98ff6f3d8d15356b6deae1170a91534a045f4a2 Mon Sep 17 00:00:00 2001
+From 9326ff1d674fbd2f9bba99a4658ff462b986a7c9 Mon Sep 17 00:00:00 2001
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 Date: Thu, 28 May 2020 16:13:57 -0400
-Subject: [PATCH 11/16] x86/entry/64: Handle FSGSBASE enabled paranoid
+Subject: [PATCH 11/21] x86/entry/64: Handle FSGSBASE enabled paranoid
  entry/exit
 
 Without FSGSBASE, user space cannot change GSBASE other than through a
@@ -40,7 +40,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 91 insertions(+), 22 deletions(-)
 
 diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index 1b95cdc19b18..57335f948bf7 100644
+index 1b95cdc19..57335f948 100644
 --- a/arch/x86/entry/calling.h
 +++ b/arch/x86/entry/calling.h
 @@ -342,6 +342,12 @@ For 32-bit we have the following conventions - kernel is built with
@@ -57,7 +57,7 @@ index 1b95cdc19b18..57335f948bf7 100644
  
  .macro STACKLEAK_ERASE
 diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 3b9ccba6c4b4..53246c470607 100644
+index 3b9ccba6c..53246c470 100644
 --- a/arch/x86/entry/entry_64.S
 +++ b/arch/x86/entry/entry_64.S
 @@ -38,6 +38,7 @@
@@ -226,5 +226,5 @@ index 3b9ccba6c4b4..53246c470607 100644
  	POP_REGS
  
 -- 
-2.27.0.rc2
+2.27.0.112.g101b3204f3
 

@@ -1,7 +1,7 @@
-From a695815fb4c29cded1ea943bd5682443e1b8e7d0 Mon Sep 17 00:00:00 2001
+From 900b2defa0185481b6f8a05b01ddea8844249547 Mon Sep 17 00:00:00 2001
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 Date: Thu, 28 May 2020 16:13:55 -0400
-Subject: [PATCH 09/16] x86/entry/64: Switch CR3 before SWAPGS in paranoid
+Subject: [PATCH 09/21] x86/entry/64: Switch CR3 before SWAPGS in paranoid
  entry
 
 When FSGSBASE is enabled, the GSBASE handling in paranoid entry will need
@@ -32,7 +32,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 24 insertions(+), 8 deletions(-)
 
 diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 3063aa9090f9..3b9ccba6c4b4 100644
+index 3063aa909..3b9ccba6c 100644
 --- a/arch/x86/entry/entry_64.S
 +++ b/arch/x86/entry/entry_64.S
 @@ -1220,13 +1220,6 @@ SYM_CODE_START_LOCAL(paranoid_entry)
@@ -99,5 +99,5 @@ index 3063aa9090f9..3b9ccba6c4b4 100644
  	TRACE_IRQS_IRETQ
  	/* Always restore stashed CR3 value (see paranoid_entry) */
 -- 
-2.27.0.rc2
+2.27.0.112.g101b3204f3
 

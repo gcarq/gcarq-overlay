@@ -1,7 +1,7 @@
-From a9aeb3866ea17835be59b415c1d3b4117a4f7c3c Mon Sep 17 00:00:00 2001
+From be779b20ff6e867cb4acb2749325bb5b3426d6dd Mon Sep 17 00:00:00 2001
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 28 May 2020 16:14:00 -0400
-Subject: [PATCH 14/16] Documentation/x86/64: Add documentation for GS/FS
+Subject: [PATCH 14/21] Documentation/x86/64: Add documentation for GS/FS
  addressing mode
 
 Explain how the GS/FS based addressing can be utilized in user space
@@ -30,7 +30,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
 
 diff --git a/Documentation/x86/x86_64/fsgs.rst b/Documentation/x86/x86_64/fsgs.rst
 new file mode 100644
-index 000000000000..50960e09e1f6
+index 000000000..50960e09e
 --- /dev/null
 +++ b/Documentation/x86/x86_64/fsgs.rst
 @@ -0,0 +1,199 @@
@@ -234,7 +234,7 @@ index 000000000000..50960e09e1f6
 +	mov %reg, %fs:offset
 +	mov %reg, %gs:offset
 diff --git a/Documentation/x86/x86_64/index.rst b/Documentation/x86/x86_64/index.rst
-index d6eaaa5a35fc..a56070fc8e77 100644
+index d6eaaa5a3..a56070fc8 100644
 --- a/Documentation/x86/x86_64/index.rst
 +++ b/Documentation/x86/x86_64/index.rst
 @@ -14,3 +14,4 @@ x86_64 Support
@@ -243,5 +243,5 @@ index d6eaaa5a35fc..a56070fc8e77 100644
     machinecheck
 +   fsgs
 -- 
-2.27.0.rc2
+2.27.0.112.g101b3204f3
 

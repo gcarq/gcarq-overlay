@@ -1,7 +1,7 @@
-From 33c1d170d9cd19e1f59eb06c8b09ba44fad8675c Mon Sep 17 00:00:00 2001
+From bee58bcdc0ee08fedc95a80bf3bd883247e72a83 Mon Sep 17 00:00:00 2001
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 Date: Thu, 28 May 2020 16:13:56 -0400
-Subject: [PATCH 10/16] x86/entry/64: Introduce the FIND_PERCPU_BASE macro
+Subject: [PATCH 10/21] x86/entry/64: Introduce the FIND_PERCPU_BASE macro
 
 GSBASE is used to find per-CPU data in the kernel. But when GSBASE is
 unknown, the per-CPU base can be found from the per_cpu_offset table with a
@@ -29,7 +29,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 49 insertions(+)
 
 diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index 1c7f13bb6728..1b95cdc19b18 100644
+index 1c7f13bb6..1b95cdc19 100644
 --- a/arch/x86/entry/calling.h
 +++ b/arch/x86/entry/calling.h
 @@ -6,6 +6,7 @@
@@ -81,7 +81,7 @@ index 1c7f13bb6728..1b95cdc19b18 100644
   * This does 'call enter_from_user_mode' unless we can avoid it based on
   * kernel config or using the static jump infrastructure.
 diff --git a/arch/x86/include/asm/inst.h b/arch/x86/include/asm/inst.h
-index f5a796da07f8..d063841a17e3 100644
+index f5a796da0..d063841a1 100644
 --- a/arch/x86/include/asm/inst.h
 +++ b/arch/x86/include/asm/inst.h
 @@ -306,6 +306,21 @@
@@ -107,5 +107,5 @@ index f5a796da07f8..d063841a17e3 100644
  
  #endif
 -- 
-2.27.0.rc2
+2.27.0.112.g101b3204f3
 

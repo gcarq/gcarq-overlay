@@ -1,7 +1,7 @@
-From b6420ebe8091719e1e0392dd65322eeb0f2556ff Mon Sep 17 00:00:00 2001
+From fb69a74fb8c45de09325c406459ccf88aadf21f8 Mon Sep 17 00:00:00 2001
 From: Andy Lutomirski <luto@kernel.org>
 Date: Thu, 28 May 2020 16:13:48 -0400
-Subject: [PATCH 02/16] x86/cpu: Add 'unsafe_fsgsbase' to enable CR4.FSGSBASE
+Subject: [PATCH 02/21] x86/cpu: Add 'unsafe_fsgsbase' to enable CR4.FSGSBASE
 
 This is temporary.  It will allow the next few patches to be tested
 incrementally.
@@ -25,7 +25,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 27 insertions(+)
 
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 7bc83f3d9bdf..af3aaade195b 100644
+index ffa53aaa6..588f4eb13 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
 @@ -3033,6 +3033,9 @@
@@ -39,7 +39,7 @@ index 7bc83f3d9bdf..af3aaade195b 100644
  			[HW] Never suspend the console
  			Disable suspending of consoles during suspend and
 diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index bed0cb83fe24..4224760c74e2 100644
+index 8293ee514..7e2954ba6 100644
 --- a/arch/x86/kernel/cpu/common.c
 +++ b/arch/x86/kernel/cpu/common.c
 @@ -418,6 +418,22 @@ static void __init setup_cr_pinning(void)
@@ -65,7 +65,7 @@ index bed0cb83fe24..4224760c74e2 100644
  /*
   * Protection Keys are not available in 32-bit mode.
   */
-@@ -1478,6 +1494,14 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+@@ -1511,6 +1527,14 @@ static void identify_cpu(struct cpuinfo_x86 *c)
  	setup_smap(c);
  	setup_umip(c);
  
@@ -81,5 +81,5 @@ index bed0cb83fe24..4224760c74e2 100644
  	 * The vendor-specific functions might have changed features.
  	 * Now we do "generic changes."
 -- 
-2.27.0.rc2
+2.27.0.112.g101b3204f3
 

@@ -1,7 +1,7 @@
-From ebb6a35bd516cd0d9534da82a74c7e2ccf7d66a4 Mon Sep 17 00:00:00 2001
+From a0d40e8fe282e44cf9380817005769755dc7375e Mon Sep 17 00:00:00 2001
 From: Andi Kleen <ak@linux.intel.com>
 Date: Thu, 28 May 2020 16:13:49 -0400
-Subject: [PATCH 03/16] x86/fsgsbase/64: Add intrinsics for FSGSBASE
+Subject: [PATCH 03/21] x86/fsgsbase/64: Add intrinsics for FSGSBASE
  instructions
 
 [ luto: Rename the variables from FS and GS to FSBASE and GSBASE and
@@ -22,7 +22,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 30 insertions(+)
 
 diff --git a/arch/x86/include/asm/fsgsbase.h b/arch/x86/include/asm/fsgsbase.h
-index bca4c743de77..fdd1177499b4 100644
+index bca4c743d..fdd117749 100644
 --- a/arch/x86/include/asm/fsgsbase.h
 +++ b/arch/x86/include/asm/fsgsbase.h
 @@ -19,6 +19,36 @@ extern unsigned long x86_gsbase_read_task(struct task_struct *task);
@@ -63,5 +63,5 @@ index bca4c743de77..fdd1177499b4 100644
  
  static inline unsigned long x86_fsbase_read_cpu(void)
 -- 
-2.27.0.rc2
+2.27.0.112.g101b3204f3
 
