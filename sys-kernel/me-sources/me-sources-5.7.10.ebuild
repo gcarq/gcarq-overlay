@@ -14,7 +14,7 @@ KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~spa
 HOMEPAGE="
 	https://github.com/gcarq/gcarq-overlay
 	https://github.com/sirlucjan/kernel-patches
-	http://ck.kolivas.org/patches
+	https://gitlab.com/alfredchen/projectc
 "
 IUSE="experimental"
 
@@ -25,10 +25,11 @@ DESCRIPTION="Gentoo's genpatches for Linux ${K_BRANCH_ID}, including various oth
 SRC_URI="${KERNEL_URI} ${GENPATCHES_URI} ${ARCH_URI}"
 
 UNIPATCH_LIST="
-	"${FILESDIR}/ck-patches/*.patch"
 	"${FILESDIR}/clearlinux-patches/*.patch"
 	"${FILESDIR}/cpu-patches/*.patch"
+	"${FILESDIR}/fsgsbase-patches/*.patch"
 	"${FILESDIR}/futex-patches/*.patch"
+	"${FILESDIR}/projectc-patches/*.patch"
 "
 UNIPATCH_STRICTORDER="yes"
 
