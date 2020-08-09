@@ -1,7 +1,7 @@
-From c347037e60e92afacafcbb4b17242d0e6fff2e7c Mon Sep 17 00:00:00 2001
+From c8bd74d3bf873ecd3e412f90b339f1ddcd40ace2 Mon Sep 17 00:00:00 2001
 From: Andy Lutomirski <luto@kernel.org>
 Date: Thu, 28 May 2020 16:13:51 -0400
-Subject: [PATCH 05/21] x86/process/64: Use FSBSBASE in switch_to() if
+Subject: [PATCH 05/22] x86/process/64: Use FSBSBASE in switch_to() if
  available
 
 With the new FSGSBASE instructions, FS and GSABSE can be efficiently read
@@ -37,7 +37,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 28 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 062468982..85c7f9cab 100644
+index 0624689825a3..85c7f9cabde2 100644
 --- a/arch/x86/kernel/process_64.c
 +++ b/arch/x86/kernel/process_64.c
 @@ -233,8 +233,18 @@ static __always_inline void save_fsgs(struct task_struct *task)
@@ -89,5 +89,5 @@ index 062468982..85c7f9cab 100644
  
  static unsigned long x86_fsgsbase_read_task(struct task_struct *task,
 -- 
-2.27.0.112.g101b3204f3
+2.27.0.221.ga08a83db2b
 

@@ -1,7 +1,7 @@
-From bf7b9854f69be5c958efe5fb670ee544426bfdf4 Mon Sep 17 00:00:00 2001
+From 84113cc7d2fb375ad1f3c1570ecbcc62d8e9db57 Mon Sep 17 00:00:00 2001
 From: Andy Lutomirski <luto@kernel.org>
 Date: Sat, 20 Jun 2020 08:29:44 -0700
-Subject: [PATCH 19/21] x86/ptrace: Fix 32-bit PTRACE_SETREGS vs fsbase and
+Subject: [PATCH 19/22] x86/ptrace: Fix 32-bit PTRACE_SETREGS vs fsbase and
  gsbase
 
 Debuggers expect that doing PTRACE_GETREGS, then poking at a tracee
@@ -39,7 +39,7 @@ Signed-off-by: Andy Lutomirski <luto@kernel.org>
  create mode 100644 tools/testing/selftests/x86/fsgsbase_restore.c
 
 diff --git a/arch/x86/include/asm/fsgsbase.h b/arch/x86/include/asm/fsgsbase.h
-index aefd53767..d55264641 100644
+index aefd53767a5d..d552646411a9 100644
 --- a/arch/x86/include/asm/fsgsbase.h
 +++ b/arch/x86/include/asm/fsgsbase.h
 @@ -75,6 +75,8 @@ static inline void x86_fsbase_write_cpu(unsigned long fsbase)
@@ -52,7 +52,7 @@ index aefd53767..d55264641 100644
  #endif /* CONFIG_X86_64 */
  
 diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 0bcb48a12..b4e56f827 100644
+index 0bcb48a1264a..b4e56f82788c 100644
 --- a/arch/x86/kernel/process_64.c
 +++ b/arch/x86/kernel/process_64.c
 @@ -344,8 +344,8 @@ static __always_inline void x86_fsgsbase_load(struct thread_struct *prev,
@@ -67,7 +67,7 @@ index 0bcb48a12..b4e56f827 100644
  	unsigned short idx = selector >> 3;
  	unsigned long base;
 diff --git a/arch/x86/kernel/ptrace.c b/arch/x86/kernel/ptrace.c
-index cc56efb75..3ae271830 100644
+index cc56efb75d27..3ae2718300e6 100644
 --- a/arch/x86/kernel/ptrace.c
 +++ b/arch/x86/kernel/ptrace.c
 @@ -282,17 +282,9 @@ static int set_segment_reg(struct task_struct *task,
@@ -134,7 +134,7 @@ index cc56efb75..3ae271830 100644
  
  	R32(ebx, bx);
 diff --git a/tools/testing/selftests/x86/Makefile b/tools/testing/selftests/x86/Makefile
-index 5d49bfec1..8aee616b3 100644
+index 5d49bfec1e9a..8aee616b3b89 100644
 --- a/tools/testing/selftests/x86/Makefile
 +++ b/tools/testing/selftests/x86/Makefile
 @@ -13,7 +13,7 @@ CAN_BUILD_WITH_NOPIE := $(shell ./check_cc.sh $(CC) trivial_program.c -no-pie)
@@ -148,7 +148,7 @@ index 5d49bfec1..8aee616b3 100644
  			vdso_restorer
 diff --git a/tools/testing/selftests/x86/fsgsbase_restore.c b/tools/testing/selftests/x86/fsgsbase_restore.c
 new file mode 100644
-index 000000000..70502a708
+index 000000000000..70502a708dee
 --- /dev/null
 +++ b/tools/testing/selftests/x86/fsgsbase_restore.c
 @@ -0,0 +1,245 @@
@@ -398,5 +398,5 @@ index 000000000..70502a708
 +	return 0;
 +}
 -- 
-2.27.0.112.g101b3204f3
+2.27.0.221.ga08a83db2b
 

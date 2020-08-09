@@ -23,14 +23,14 @@ index b6b1f54a7..aa06b9312 100644
 -int __read_mostly watchdog_thresh = 10;
 +int __read_mostly watchdog_thresh = 40;
  static int __read_mostly nmi_watchdog_available;
-
+ 
  static struct cpumask watchdog_allowed_mask __read_mostly;
 diff --git a/mm/ksm.c b/mm/ksm.c
 index 281c00129..45b1546c9 100644
 --- a/mm/ksm.c
 +++ b/mm/ksm.c
 @@ -2422,9 +2422,14 @@ static int ksm_scan_thread(void *nothing)
-
+ 
  		if (ksmd_should_run()) {
  			sleep_ms = READ_ONCE(ksm_thread_sleep_millisecs);
 -			wait_event_interruptible_timeout(ksm_iter_wait,
@@ -47,6 +47,6 @@ index 281c00129..45b1546c9 100644
  		} else {
  			wait_event_freezable(ksm_thread_wait,
  				ksmd_should_run() || kthread_should_stop());
---
+-- 
 2.27.0.83.g0313f36c6e
 

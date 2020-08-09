@@ -1,7 +1,7 @@
-From 41b34f043560c89213a144c3d55ffd051b322a94 Mon Sep 17 00:00:00 2001
+From 837f483f6ad3b49fa7c63d4e4dcb687a7eb22783 Mon Sep 17 00:00:00 2001
 From: Andy Lutomirski <luto@kernel.org>
 Date: Wed, 27 May 2020 16:02:36 -0700
-Subject: [PATCH 20/21] selftests/x86: Add a syscall_arg_fault_64 test for
+Subject: [PATCH 20/22] selftests/x86: Add a syscall_arg_fault_64 test for
  negative GSBASE
 
 If the kernel erroneously allows WRGSBASE and user code writes a
@@ -25,7 +25,7 @@ Link: https://lkml.kernel.org/r/f4f71efc91b9eae5e3dae21c9aee1c70cf5f370e.1590620
  1 file changed, 26 insertions(+)
 
 diff --git a/tools/testing/selftests/x86/syscall_arg_fault.c b/tools/testing/selftests/x86/syscall_arg_fault.c
-index bc0ecc2e8..62fba4086 100644
+index bc0ecc2e862e..62fba40866d5 100644
 --- a/tools/testing/selftests/x86/syscall_arg_fault.c
 +++ b/tools/testing/selftests/x86/syscall_arg_fault.c
 @@ -72,6 +72,7 @@ static void sigsegv_or_sigbus(int sig, siginfo_t *info, void *ctx_void)
@@ -68,5 +68,5 @@ index bc0ecc2e8..62fba4086 100644
  	return 0;
  }
 -- 
-2.27.0.112.g101b3204f3
+2.27.0.221.ga08a83db2b
 

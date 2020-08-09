@@ -1,7 +1,7 @@
-From 3162620086f8b40ff0559d098d23eeee5a75f341 Mon Sep 17 00:00:00 2001
+From 13bdf9a528226ea8c3f1efc3f5395800511d7fcf Mon Sep 17 00:00:00 2001
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 28 May 2020 16:13:52 -0400
-Subject: [PATCH 06/21] x86/process/64: Make save_fsgs() public available
+Subject: [PATCH 06/22] x86/process/64: Make save_fsgs() public available
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
@@ -12,7 +12,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 3bcf27caf..809bc013d 100644
+index 3bcf27caf6c9..809bc013db70 100644
 --- a/arch/x86/include/asm/processor.h
 +++ b/arch/x86/include/asm/processor.h
 @@ -456,10 +456,8 @@ static inline unsigned long cpu_kernelmode_gs_base(int cpu)
@@ -28,7 +28,7 @@ index 3bcf27caf..809bc013d 100644
  #ifdef CONFIG_STACKPROTECTOR
  /*
 diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 85c7f9cab..aefb30bc5 100644
+index 85c7f9cabde2..aefb30bc56bc 100644
 --- a/arch/x86/kernel/process_64.c
 +++ b/arch/x86/kernel/process_64.c
 @@ -247,18 +247,21 @@ static __always_inline void save_fsgs(struct task_struct *task)
@@ -60,7 +60,7 @@ index 85c7f9cab..aefb30bc5 100644
  
  static __always_inline void loadseg(enum which_selector which,
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index d7aa0dfab..430774bff 100644
+index 89c766fad889..309e6dc975d5 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
 @@ -1167,7 +1167,7 @@ void vmx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
@@ -73,5 +73,5 @@ index d7aa0dfab..430774bff 100644
  		gs_sel = current->thread.gsindex;
  		fs_base = current->thread.fsbase;
 -- 
-2.27.0.112.g101b3204f3
+2.27.0.221.ga08a83db2b
 

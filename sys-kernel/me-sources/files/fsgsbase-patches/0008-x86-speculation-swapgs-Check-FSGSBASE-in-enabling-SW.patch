@@ -1,7 +1,7 @@
-From aaa66b23a4968a6828236e3bebd65f8cf6cc075e Mon Sep 17 00:00:00 2001
+From 9fda60a3e6b7d7bc3883a1eb358c4b9601884cb5 Mon Sep 17 00:00:00 2001
 From: Tony Luck <tony.luck@intel.com>
 Date: Thu, 28 May 2020 16:13:54 -0400
-Subject: [PATCH 08/21] x86/speculation/swapgs: Check FSGSBASE in enabling
+Subject: [PATCH 08/22] x86/speculation/swapgs: Check FSGSBASE in enabling
  SWAPGS mitigation
 
 Before enabling FSGSBASE the kernel could safely assume that the content
@@ -32,10 +32,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index b53dcff21..b3004dda4 100644
+index ed54b3b21c39..487603ea51cd 100644
 --- a/arch/x86/kernel/cpu/bugs.c
 +++ b/arch/x86/kernel/cpu/bugs.c
-@@ -543,14 +543,12 @@ static void __init spectre_v1_select_mitigation(void)
+@@ -450,14 +450,12 @@ static void __init spectre_v1_select_mitigation(void)
  		 * If FSGSBASE is enabled, the user can put a kernel address in
  		 * GS, in which case SMAP provides no protection.
  		 *
@@ -53,5 +53,5 @@ index b53dcff21..b3004dda4 100644
  			 * Mitigation can be provided from SWAPGS itself or
  			 * PTI as the CR3 write in the Meltdown mitigation
 -- 
-2.27.0.112.g101b3204f3
+2.27.0.221.ga08a83db2b
 

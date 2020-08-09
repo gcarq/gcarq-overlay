@@ -1,7 +1,7 @@
-From 81c0b794d059bdbd98019ccf9eb238694a9b92e0 Mon Sep 17 00:00:00 2001
+From 8629d9900de1a92d1c1b02d3be28453590f71477 Mon Sep 17 00:00:00 2001
 From: Andi Kleen <ak@linux.intel.com>
 Date: Thu, 28 May 2020 16:13:59 -0400
-Subject: [PATCH 13/21] x86/elf: Enumerate kernel FSGSBASE capability in
+Subject: [PATCH 13/22] x86/elf: Enumerate kernel FSGSBASE capability in
  AT_HWCAP2
 
 The kernel needs to explicitly enable FSGSBASE. So, the application needs
@@ -35,7 +35,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/include/uapi/asm/hwcap2.h b/arch/x86/include/uapi/asm/hwcap2.h
-index 8b2effe6e..5fdfcb470 100644
+index 8b2effe6efb8..5fdfcb47000f 100644
 --- a/arch/x86/include/uapi/asm/hwcap2.h
 +++ b/arch/x86/include/uapi/asm/hwcap2.h
 @@ -5,4 +5,7 @@
@@ -47,10 +47,10 @@ index 8b2effe6e..5fdfcb470 100644
 +
  #endif
 diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 9d891f63b..74f6a08e7 100644
+index 0d480cbadc7d..b5a086ea3425 100644
 --- a/arch/x86/kernel/cpu/common.c
 +++ b/arch/x86/kernel/cpu/common.c
-@@ -1528,8 +1528,10 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+@@ -1495,8 +1495,10 @@ static void identify_cpu(struct cpuinfo_x86 *c)
  	setup_umip(c);
  
  	/* Enable FSGSBASE instructions if available. */
@@ -63,5 +63,5 @@ index 9d891f63b..74f6a08e7 100644
  	/*
  	 * The vendor-specific functions might have changed features.
 -- 
-2.27.0.112.g101b3204f3
+2.27.0.221.ga08a83db2b
 

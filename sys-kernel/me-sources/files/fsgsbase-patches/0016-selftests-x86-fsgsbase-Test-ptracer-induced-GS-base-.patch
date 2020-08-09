@@ -1,7 +1,7 @@
-From 877a6d6273f3e3a73e9df1cf94ddf3d23cc9a6c1 Mon Sep 17 00:00:00 2001
+From 74a54dec74cc76f504661d47c2d0342ce8a8a1a5 Mon Sep 17 00:00:00 2001
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 Date: Thu, 28 May 2020 16:14:02 -0400
-Subject: [PATCH 16/21] selftests/x86/fsgsbase: Test ptracer-induced GS base
+Subject: [PATCH 16/22] selftests/x86/fsgsbase: Test ptracer-induced GS base
  write with FSGSBASE
 
 This validates that GS selector and base are independently preserved in
@@ -23,7 +23,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/tools/testing/selftests/x86/fsgsbase.c b/tools/testing/selftests/x86/fsgsbase.c
-index 950a48b2e..9a4349813 100644
+index 950a48b2e366..9a4349813a30 100644
 --- a/tools/testing/selftests/x86/fsgsbase.c
 +++ b/tools/testing/selftests/x86/fsgsbase.c
 @@ -465,7 +465,7 @@ static void test_ptrace_write_gsbase(void)
@@ -60,5 +60,5 @@ index 950a48b2e..9a4349813 100644
  	}
  
 -- 
-2.27.0.112.g101b3204f3
+2.27.0.221.ga08a83db2b
 

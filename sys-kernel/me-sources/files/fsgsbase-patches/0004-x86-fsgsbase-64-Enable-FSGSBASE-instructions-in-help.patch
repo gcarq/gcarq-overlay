@@ -1,7 +1,7 @@
-From c1416bba2416d252b4077f7722a4cde35f4a4a8e Mon Sep 17 00:00:00 2001
+From e1450833d1c1b8ad0ac7f04e2778bdec20b59145 Mon Sep 17 00:00:00 2001
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 Date: Thu, 28 May 2020 16:13:50 -0400
-Subject: [PATCH 04/21] x86/fsgsbase/64: Enable FSGSBASE instructions in helper
+Subject: [PATCH 04/22] x86/fsgsbase/64: Enable FSGSBASE instructions in helper
  functions
 
 Add cpu feature conditional FSGSBASE access to the relevant helper
@@ -36,7 +36,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 76 insertions(+), 15 deletions(-)
 
 diff --git a/arch/x86/include/asm/fsgsbase.h b/arch/x86/include/asm/fsgsbase.h
-index fdd117749..aefd53767 100644
+index fdd1177499b4..aefd53767a5d 100644
 --- a/arch/x86/include/asm/fsgsbase.h
 +++ b/arch/x86/include/asm/fsgsbase.h
 @@ -49,35 +49,32 @@ static __always_inline void wrgsbase(unsigned long gsbase)
@@ -88,7 +88,7 @@ index fdd117749..aefd53767 100644
  #endif /* CONFIG_X86_64 */
  
 diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 5ef9d8f25..062468982 100644
+index 5ef9d8f25b0e..0624689825a3 100644
 --- a/arch/x86/kernel/process_64.c
 +++ b/arch/x86/kernel/process_64.c
 @@ -150,6 +150,40 @@ enum which_selector {
@@ -170,5 +170,5 @@ index 5ef9d8f25..062468982 100644
  {
  	unsigned long fsbase;
 -- 
-2.27.0.112.g101b3204f3
+2.27.0.221.ga08a83db2b
 
