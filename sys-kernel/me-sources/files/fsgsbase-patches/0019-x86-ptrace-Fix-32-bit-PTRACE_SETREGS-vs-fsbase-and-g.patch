@@ -1,7 +1,7 @@
-From 84113cc7d2fb375ad1f3c1570ecbcc62d8e9db57 Mon Sep 17 00:00:00 2001
+From 6cb11fd77420e8ebfca5591dda6ecbbb1224e2ba Mon Sep 17 00:00:00 2001
 From: Andy Lutomirski <luto@kernel.org>
 Date: Sat, 20 Jun 2020 08:29:44 -0700
-Subject: [PATCH 19/22] x86/ptrace: Fix 32-bit PTRACE_SETREGS vs fsbase and
+Subject: [PATCH 19/24] x86/ptrace: Fix 32-bit PTRACE_SETREGS vs fsbase and
  gsbase
 
 Debuggers expect that doing PTRACE_GETREGS, then poking at a tracee
@@ -39,7 +39,7 @@ Signed-off-by: Andy Lutomirski <luto@kernel.org>
  create mode 100644 tools/testing/selftests/x86/fsgsbase_restore.c
 
 diff --git a/arch/x86/include/asm/fsgsbase.h b/arch/x86/include/asm/fsgsbase.h
-index aefd53767a5d..d552646411a9 100644
+index aefd53767..d55264641 100644
 --- a/arch/x86/include/asm/fsgsbase.h
 +++ b/arch/x86/include/asm/fsgsbase.h
 @@ -75,6 +75,8 @@ static inline void x86_fsbase_write_cpu(unsigned long fsbase)
@@ -52,10 +52,10 @@ index aefd53767a5d..d552646411a9 100644
  #endif /* CONFIG_X86_64 */
  
 diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 0bcb48a1264a..b4e56f82788c 100644
+index d618969ce..cb8e37d3a 100644
 --- a/arch/x86/kernel/process_64.c
 +++ b/arch/x86/kernel/process_64.c
-@@ -344,8 +344,8 @@ static __always_inline void x86_fsgsbase_load(struct thread_struct *prev,
+@@ -347,8 +347,8 @@ static __always_inline void x86_fsgsbase_load(struct thread_struct *prev,
  	}
  }
  
@@ -67,10 +67,10 @@ index 0bcb48a1264a..b4e56f82788c 100644
  	unsigned short idx = selector >> 3;
  	unsigned long base;
 diff --git a/arch/x86/kernel/ptrace.c b/arch/x86/kernel/ptrace.c
-index cc56efb75d27..3ae2718300e6 100644
+index 1c7646c8d..9e62228ae 100644
 --- a/arch/x86/kernel/ptrace.c
 +++ b/arch/x86/kernel/ptrace.c
-@@ -282,17 +282,9 @@ static int set_segment_reg(struct task_struct *task,
+@@ -281,17 +281,9 @@ static int set_segment_reg(struct task_struct *task,
  		return -EIO;
  
  	/*
@@ -91,7 +91,7 @@ index cc56efb75d27..3ae2718300e6 100644
  	 */
  
  	switch (offset) {
-@@ -868,14 +860,39 @@ long arch_ptrace(struct task_struct *child, long request,
+@@ -867,14 +859,39 @@ long arch_ptrace(struct task_struct *child, long request,
  static int putreg32(struct task_struct *child, unsigned regno, u32 value)
  {
  	struct pt_regs *regs = task_pt_regs(child);
@@ -134,13 +134,13 @@ index cc56efb75d27..3ae2718300e6 100644
  
  	R32(ebx, bx);
 diff --git a/tools/testing/selftests/x86/Makefile b/tools/testing/selftests/x86/Makefile
-index 5d49bfec1e9a..8aee616b3b89 100644
+index d2796ea98..6703c7906 100644
 --- a/tools/testing/selftests/x86/Makefile
 +++ b/tools/testing/selftests/x86/Makefile
 @@ -13,7 +13,7 @@ CAN_BUILD_WITH_NOPIE := $(shell ./check_cc.sh $(CC) trivial_program.c -no-pie)
  TARGETS_C_BOTHBITS := single_step_syscall sysret_ss_attrs syscall_nt test_mremap_vdso \
  			check_initial_reg_state sigreturn iopl ioperm \
- 			protection_keys test_vdso test_vsyscall mov_ss_trap \
+ 			test_vdso test_vsyscall mov_ss_trap \
 -			syscall_arg_fault
 +			syscall_arg_fault fsgsbase_restore
  TARGETS_C_32BIT_ONLY := entry_from_vm86 test_syscall_vdso unwind_vdso \
@@ -148,7 +148,7 @@ index 5d49bfec1e9a..8aee616b3b89 100644
  			vdso_restorer
 diff --git a/tools/testing/selftests/x86/fsgsbase_restore.c b/tools/testing/selftests/x86/fsgsbase_restore.c
 new file mode 100644
-index 000000000000..70502a708dee
+index 000000000..70502a708
 --- /dev/null
 +++ b/tools/testing/selftests/x86/fsgsbase_restore.c
 @@ -0,0 +1,245 @@
@@ -398,5 +398,5 @@ index 000000000000..70502a708dee
 +	return 0;
 +}
 -- 
-2.27.0.221.ga08a83db2b
+2.28.0.89.g85b4e0a6dc
 

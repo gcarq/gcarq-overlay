@@ -1,7 +1,7 @@
-From 5b10dd2885008e023b2ffc72e40e719cdf8d538c Mon Sep 17 00:00:00 2001
+From a3e8ce4e0039ab08629916ac17b5f20416f4b05a Mon Sep 17 00:00:00 2001
 From: Andy Lutomirski <luto@kernel.org>
 Date: Thu, 28 May 2020 16:13:58 -0400
-Subject: [PATCH 12/22] x86/cpu: Enable FSGSBASE on 64bit by default and add a
+Subject: [PATCH 12/24] x86/cpu: Enable FSGSBASE on 64bit by default and add a
  chicken bit
 
 Now that FSGSBASE is fully supported, remove unsafe_fsgsbase, enable
@@ -10,21 +10,21 @@ FSGSBASE by default, and add nofsgsbase to disable it.
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Cc: Ravi Shankar <ravi.v.shankar@intel.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Link: https://lkml.kernel.org/r/1557309753-24073-17-git-send-email-chang.seok.bae@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Link: https://lkml.kernel.org/r/1557309753-24073-17-git-send-email-chang.seok.bae@intel.com
+Link: https://lkml.kernel.org/r/20200528201402.1708239-13-sashal@kernel.org
 ---
  .../admin-guide/kernel-parameters.txt         |  3 +-
  arch/x86/kernel/cpu/common.c                  | 32 ++++++++-----------
  2 files changed, 15 insertions(+), 20 deletions(-)
 
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index af3aaade195b..1924845c879c 100644
+index bd140321e..94ad40a69 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3033,8 +3033,7 @@
+@@ -3079,8 +3079,7 @@
  	no5lvl		[X86-64] Disable 5-level paging mode. Forces
  			kernel to use 4-level paging instead.
  
@@ -35,10 +35,10 @@ index af3aaade195b..1924845c879c 100644
  	no_console_suspend
  			[HW] Never suspend the console
 diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 4224760c74e2..0d480cbadc7d 100644
+index dd18e7859..82ecb6452 100644
 --- a/arch/x86/kernel/cpu/common.c
 +++ b/arch/x86/kernel/cpu/common.c
-@@ -418,21 +418,21 @@ static void __init setup_cr_pinning(void)
+@@ -441,21 +441,21 @@ static void __init setup_cr_pinning(void)
  	static_key_enable(&cr_pinning.key);
  }
  
@@ -72,7 +72,7 @@ index 4224760c74e2..0d480cbadc7d 100644
  
  /*
   * Protection Keys are not available in 32-bit mode.
-@@ -1495,12 +1495,8 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+@@ -1512,12 +1512,8 @@ static void identify_cpu(struct cpuinfo_x86 *c)
  	setup_umip(c);
  
  	/* Enable FSGSBASE instructions if available. */
@@ -88,5 +88,5 @@ index 4224760c74e2..0d480cbadc7d 100644
  	/*
  	 * The vendor-specific functions might have changed features.
 -- 
-2.27.0.221.ga08a83db2b
+2.28.0.89.g85b4e0a6dc
 

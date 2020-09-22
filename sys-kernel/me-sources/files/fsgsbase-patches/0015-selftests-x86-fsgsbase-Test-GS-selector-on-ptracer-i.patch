@@ -1,7 +1,7 @@
-From 57b9164dc212122caa11f75c76daaa4a222b9ed3 Mon Sep 17 00:00:00 2001
+From d5abc6680859f05aa28bbfd234bfc021e561ccbb Mon Sep 17 00:00:00 2001
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 Date: Thu, 28 May 2020 16:14:01 -0400
-Subject: [PATCH 15/22] selftests/x86/fsgsbase: Test GS selector on
+Subject: [PATCH 15/24] selftests/x86/fsgsbase: Test GS selector on
  ptracer-induced GS base write
 
 The test validates that the selector is not changed when a ptracer writes
@@ -9,21 +9,16 @@ the ptracee's GS base.
 
 Originally-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://lkml.kernel.org/r/20200528201402.1708239-16-sashal@kernel.org
 ---
  tools/testing/selftests/x86/fsgsbase.c | 21 +++++++++++++++------
  1 file changed, 15 insertions(+), 6 deletions(-)
 
 diff --git a/tools/testing/selftests/x86/fsgsbase.c b/tools/testing/selftests/x86/fsgsbase.c
-index 15a329da59fa..950a48b2e366 100644
+index 15a329da5..950a48b2e 100644
 --- a/tools/testing/selftests/x86/fsgsbase.c
 +++ b/tools/testing/selftests/x86/fsgsbase.c
 @@ -465,7 +465,7 @@ static void test_ptrace_write_gsbase(void)
@@ -70,5 +65,5 @@ index 15a329da59fa..950a48b2e366 100644
  	}
  
 -- 
-2.27.0.221.ga08a83db2b
+2.28.0.89.g85b4e0a6dc
 

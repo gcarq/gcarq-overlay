@@ -1,7 +1,7 @@
-From e1450833d1c1b8ad0ac7f04e2778bdec20b59145 Mon Sep 17 00:00:00 2001
+From d57464bbb8415d0411c538251c044d6cf9774913 Mon Sep 17 00:00:00 2001
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 Date: Thu, 28 May 2020 16:13:50 -0400
-Subject: [PATCH 04/22] x86/fsgsbase/64: Enable FSGSBASE instructions in helper
+Subject: [PATCH 04/24] x86/fsgsbase/64: Enable FSGSBASE instructions in helper
  functions
 
 Add cpu feature conditional FSGSBASE access to the relevant helper
@@ -19,24 +19,23 @@ To preserve the SWAPGS entry mechanism introduce __[rd|wr]gsbase_inactive()
 helpers. Note, for Xen PV, paravirt hooks can be added later as they might
 allow a very efficient but different implementation.
 
-[ tglx: Massaged changelog ]
+[ tglx: Massaged changelog, convert it to noinstr and force inline
+  	native_swapgs() ]
 
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Ravi Shankar <ravi.v.shankar@intel.com>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Link: https://lkml.kernel.org/r/1557309753-24073-7-git-send-email-chang.seok.bae@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/1557309753-24073-7-git-send-email-chang.seok.bae@intel.com
+Link: https://lkml.kernel.org/r/20200528201402.1708239-5-sashal@kernel.org
 ---
- arch/x86/include/asm/fsgsbase.h | 27 +++++++-------
- arch/x86/kernel/process_64.c    | 64 +++++++++++++++++++++++++++++++++
- 2 files changed, 76 insertions(+), 15 deletions(-)
+ arch/x86/include/asm/fsgsbase.h  | 27 ++++++-------
+ arch/x86/include/asm/processor.h |  2 +-
+ arch/x86/kernel/process_64.c     | 68 ++++++++++++++++++++++++++++++++
+ 3 files changed, 81 insertions(+), 16 deletions(-)
 
 diff --git a/arch/x86/include/asm/fsgsbase.h b/arch/x86/include/asm/fsgsbase.h
-index fdd1177499b4..aefd53767a5d 100644
+index fdd117749..aefd53767 100644
 --- a/arch/x86/include/asm/fsgsbase.h
 +++ b/arch/x86/include/asm/fsgsbase.h
 @@ -49,35 +49,32 @@ static __always_inline void wrgsbase(unsigned long gsbase)
@@ -87,20 +86,36 @@ index fdd1177499b4..aefd53767a5d 100644
  
  #endif /* CONFIG_X86_64 */
  
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 03b7c4ca4..a6e93b250 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -575,7 +575,7 @@ native_load_sp0(unsigned long sp0)
+ 	this_cpu_write(cpu_tss_rw.x86_tss.sp0, sp0);
+ }
+ 
+-static inline void native_swapgs(void)
++static __always_inline void native_swapgs(void)
+ {
+ #ifdef CONFIG_X86_64
+ 	asm volatile("swapgs" ::: "memory");
 diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 5ef9d8f25b0e..0624689825a3 100644
+index 9a97415b2..c41e0aae8 100644
 --- a/arch/x86/kernel/process_64.c
 +++ b/arch/x86/kernel/process_64.c
-@@ -150,6 +150,40 @@ enum which_selector {
+@@ -149,6 +149,44 @@ enum which_selector {
  	GS
  };
  
 +/*
-+ * Out of line to be protected from kprobes. It is not used on Xen
-+ * paravirt. When paravirt support is needed, it needs to be renamed
-+ * with native_ prefix.
++ * Out of line to be protected from kprobes and tracing. If this would be
++ * traced or probed than any access to a per CPU variable happens with
++ * the wrong GS.
++ *
++ * It is not used on Xen paravirt. When paravirt support is needed, it
++ * needs to be renamed with native_ prefix.
 + */
-+static noinline unsigned long __rdgsbase_inactive(void)
++static noinstr unsigned long __rdgsbase_inactive(void)
 +{
 +	unsigned long gsbase;
 +
@@ -112,14 +127,16 @@ index 5ef9d8f25b0e..0624689825a3 100644
 +
 +	return gsbase;
 +}
-+NOKPROBE_SYMBOL(__rdgsbase_inactive);
 +
 +/*
-+ * Out of line to be protected from kprobes. It is not used on Xen
-+ * paravirt. When paravirt support is needed, it needs to be renamed
-+ * with native_ prefix.
++ * Out of line to be protected from kprobes and tracing. If this would be
++ * traced or probed than any access to a per CPU variable happens with
++ * the wrong GS.
++ *
++ * It is not used on Xen paravirt. When paravirt support is needed, it
++ * needs to be renamed with native_ prefix.
 + */
-+static noinline void __wrgsbase_inactive(unsigned long gsbase)
++static noinstr void __wrgsbase_inactive(unsigned long gsbase)
 +{
 +	lockdep_assert_irqs_disabled();
 +
@@ -127,12 +144,11 @@ index 5ef9d8f25b0e..0624689825a3 100644
 +	wrgsbase(gsbase);
 +	native_swapgs();
 +}
-+NOKPROBE_SYMBOL(__wrgsbase_inactive);
 +
  /*
   * Saves the FS or GS base for an outgoing thread if FSGSBASE extensions are
   * not available.  The goal is to be reasonably fast on non-FSGSBASE systems.
-@@ -328,6 +362,36 @@ static unsigned long x86_fsgsbase_read_task(struct task_struct *task,
+@@ -327,6 +365,36 @@ static unsigned long x86_fsgsbase_read_task(struct task_struct *task,
  	return base;
  }
  
@@ -170,5 +186,5 @@ index 5ef9d8f25b0e..0624689825a3 100644
  {
  	unsigned long fsbase;
 -- 
-2.27.0.221.ga08a83db2b
+2.28.0.89.g85b4e0a6dc
 

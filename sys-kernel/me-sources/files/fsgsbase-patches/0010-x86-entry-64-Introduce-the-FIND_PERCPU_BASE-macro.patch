@@ -1,7 +1,7 @@
-From 33c1d170d9cd19e1f59eb06c8b09ba44fad8675c Mon Sep 17 00:00:00 2001
+From bedf01cf79976551beec9ceea9c681345e350a05 Mon Sep 17 00:00:00 2001
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 Date: Thu, 28 May 2020 16:13:56 -0400
-Subject: [PATCH 10/22] x86/entry/64: Introduce the FIND_PERCPU_BASE macro
+Subject: [PATCH 10/24] x86/entry/64: Introduce the FIND_PERCPU_BASE macro
 
 GSBASE is used to find per-CPU data in the kernel. But when GSBASE is
 unknown, the per-CPU base can be found from the per_cpu_offset table with a
@@ -9,7 +9,7 @@ CPU NR.  The CPU NR is extracted from the limit field of the CPUNODE entry
 in GDT, or by the RDPID instruction. This is a prerequisite for using
 FSGSBASE in the low level entry code.
 
-Also, add the GAS-compatible RDPID macro as binutils 2.21 do not support
+Also, add the GAS-compatible RDPID macro as binutils 2.23 do not support
 it. Support is added in version 2.27.
 
 [ tglx: Massaged changelog ]
@@ -17,19 +17,17 @@ it. Support is added in version 2.27.
 Suggested-by: H. Peter Anvin <hpa@zytor.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Ravi Shankar <ravi.v.shankar@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/1557309753-24073-12-git-send-email-chang.seok.bae@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/1557309753-24073-12-git-send-email-chang.seok.bae@intel.com
+Link: https://lkml.kernel.org/r/20200528201402.1708239-11-sashal@kernel.org
 ---
  arch/x86/entry/calling.h    | 34 ++++++++++++++++++++++++++++++++++
  arch/x86/include/asm/inst.h | 15 +++++++++++++++
  2 files changed, 49 insertions(+)
 
 diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index 1c7f13bb6728..1b95cdc19b18 100644
+index 4208c1e3f..5c0cbb443 100644
 --- a/arch/x86/entry/calling.h
 +++ b/arch/x86/entry/calling.h
 @@ -6,6 +6,7 @@
@@ -40,10 +38,11 @@ index 1c7f13bb6728..1b95cdc19b18 100644
  
  /*
  
-@@ -349,6 +350,39 @@ For 32-bit we have the following conventions - kernel is built with
+@@ -351,3 +352,36 @@ For 32-bit we have the following conventions - kernel is built with
+ 	call stackleak_erase
  #endif
  .endm
- 
++
 +#ifdef CONFIG_SMP
 +
 +/*
@@ -76,12 +75,8 @@ index 1c7f13bb6728..1b95cdc19b18 100644
 +.endm
 +
 +#endif /* CONFIG_SMP */
-+
- /*
-  * This does 'call enter_from_user_mode' unless we can avoid it based on
-  * kernel config or using the static jump infrastructure.
 diff --git a/arch/x86/include/asm/inst.h b/arch/x86/include/asm/inst.h
-index f5a796da07f8..d063841a17e3 100644
+index f5a796da0..d063841a1 100644
 --- a/arch/x86/include/asm/inst.h
 +++ b/arch/x86/include/asm/inst.h
 @@ -306,6 +306,21 @@
@@ -107,5 +102,5 @@ index f5a796da07f8..d063841a17e3 100644
  
  #endif
 -- 
-2.27.0.221.ga08a83db2b
+2.28.0.89.g85b4e0a6dc
 

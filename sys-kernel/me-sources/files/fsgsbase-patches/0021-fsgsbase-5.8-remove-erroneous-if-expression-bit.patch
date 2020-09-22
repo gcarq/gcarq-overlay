@@ -1,7 +1,7 @@
-From 68dc9ba445be093ec3d37d0866eb391eed91f999 Mon Sep 17 00:00:00 2001
+From bb403635255c95d1c35ebb951e8b374a51ca185f Mon Sep 17 00:00:00 2001
 From: Oleksandr Natalenko <oleksandr@redhat.com>
 Date: Fri, 26 Jun 2020 09:32:08 +0200
-Subject: [PATCH 21/22] fsgsbase-5.7: remove erroneous if expression bit
+Subject: [PATCH 21/24] fsgsbase-5.8: remove erroneous if expression bit
 
 Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
 ---
@@ -22,5 +22,5 @@ index 70502a708..6fffadc51 100644
  		asm volatile ("mov %0, %" SEG :: "rm" ((unsigned short)0x7));
  	} else {
 -- 
-2.27.0.112.g101b3204f3
+2.28.0.89.g85b4e0a6dc
 

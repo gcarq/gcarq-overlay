@@ -1,7 +1,7 @@
-From c8bd74d3bf873ecd3e412f90b339f1ddcd40ace2 Mon Sep 17 00:00:00 2001
+From c5662e40833328b8162737c832f64a916d1dd509 Mon Sep 17 00:00:00 2001
 From: Andy Lutomirski <luto@kernel.org>
 Date: Thu, 28 May 2020 16:13:51 -0400
-Subject: [PATCH 05/22] x86/process/64: Use FSBSBASE in switch_to() if
+Subject: [PATCH 06/24] x86/process/64: Use FSBSBASE in switch_to() if
  available
 
 With the new FSGSBASE instructions, FS and GSABSE can be efficiently read
@@ -16,7 +16,7 @@ doing things like that.)
 
 This is a considerable speedup.  It seems to save about 100 cycles
 per context switch compared to the baseline 4.6-rc1 behavior on a
-Skylake laptop.
+Skylake laptop. This is mostly due to avoiding the WRMSR operation.
 
 [ chang: 5~10% performance improvements were seen with a context switch
   benchmark that ran threads with different FS/GSBASE values (to the
@@ -27,20 +27,20 @@ Skylake laptop.
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Cc: Ravi Shankar <ravi.v.shankar@intel.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Link: https://lkml.kernel.org/r/1557309753-24073-8-git-send-email-chang.seok.bae@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Link: https://lkml.kernel.org/r/1557309753-24073-8-git-send-email-chang.seok.bae@intel.com
+Link: https://lkml.kernel.org/r/20200528201402.1708239-6-sashal@kernel.org
 ---
  arch/x86/kernel/process_64.c | 34 ++++++++++++++++++++++++++++------
  1 file changed, 28 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 0624689825a3..85c7f9cabde2 100644
+index ef2f75588..8ccc587c3 100644
 --- a/arch/x86/kernel/process_64.c
 +++ b/arch/x86/kernel/process_64.c
-@@ -233,8 +233,18 @@ static __always_inline void save_fsgs(struct task_struct *task)
+@@ -236,8 +236,18 @@ static __always_inline void save_fsgs(struct task_struct *task)
  {
  	savesegment(fs, task->thread.fsindex);
  	savesegment(gs, task->thread.gsindex);
@@ -60,8 +60,8 @@ index 0624689825a3..85c7f9cabde2 100644
 +	}
  }
  
- #if IS_ENABLED(CONFIG_KVM)
-@@ -313,10 +323,22 @@ static __always_inline void load_seg_legacy(unsigned short prev_index,
+ /*
+@@ -319,10 +329,22 @@ static __always_inline void load_seg_legacy(unsigned short prev_index,
  static __always_inline void x86_fsgsbase_load(struct thread_struct *prev,
  					      struct thread_struct *next)
  {
@@ -89,5 +89,5 @@ index 0624689825a3..85c7f9cabde2 100644
  
  static unsigned long x86_fsgsbase_read_task(struct task_struct *task,
 -- 
-2.27.0.221.ga08a83db2b
+2.28.0.89.g85b4e0a6dc
 

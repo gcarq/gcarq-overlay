@@ -1,7 +1,7 @@
-From b757c20c89bbba7aa7cfc369a99447c58bc2a986 Mon Sep 17 00:00:00 2001
+From e55d18c50c3a1ff7c22179ff93fc67d69dac6905 Mon Sep 17 00:00:00 2001
 From: Andy Lutomirski <luto@kernel.org>
 Date: Fri, 19 Jun 2020 22:20:35 -0700
-Subject: [PATCH 18/22] selftests/x86/fsgsbase: Add a missing memory constraint
+Subject: [PATCH 18/24] selftests/x86/fsgsbase: Add a missing memory constraint
 
 The manual call to set_thread_area() via int $0x80 was missing any
 indication that the descriptor was a pointer, causing gcc to
@@ -13,7 +13,7 @@ Signed-off-by: Andy Lutomirski <luto@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/x86/fsgsbase.c b/tools/testing/selftests/x86/fsgsbase.c
-index f47495d2f070..998319553523 100644
+index f47495d2f..998319553 100644
 --- a/tools/testing/selftests/x86/fsgsbase.c
 +++ b/tools/testing/selftests/x86/fsgsbase.c
 @@ -285,7 +285,8 @@ static unsigned short load_gs(void)
@@ -27,5 +27,5 @@ index f47495d2f070..998319553523 100644
  		memcpy(&desc, low_desc, sizeof(desc));
  		munmap(low_desc, sizeof(desc));
 -- 
-2.27.0.221.ga08a83db2b
+2.28.0.89.g85b4e0a6dc
 

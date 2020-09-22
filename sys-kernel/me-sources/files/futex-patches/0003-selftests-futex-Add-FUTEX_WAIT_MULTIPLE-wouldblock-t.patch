@@ -1,4 +1,4 @@
-From b285216bc7b31eeba9b0e8081fe312bac7514931 Mon Sep 17 00:00:00 2001
+From 78594b3d1c06e2c3ef07589d824be78d07a881cb Mon Sep 17 00:00:00 2001
 From: Gabriel Krisman Bertazi <krisman@collabora.com>
 Date: Thu, 13 Feb 2020 18:45:24 -0300
 Subject: [PATCH 3/4] selftests: futex: Add FUTEX_WAIT_MULTIPLE wouldblock test
@@ -79,5 +79,5 @@ index 0ae390ff8..bcbac0429 100644
  	return ret;
  }
 -- 
-2.27.0.rc2
+2.28.0.rc2.1.g3d20111cbd
 

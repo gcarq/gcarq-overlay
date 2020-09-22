@@ -1,7 +1,7 @@
-From b6420ebe8091719e1e0392dd65322eeb0f2556ff Mon Sep 17 00:00:00 2001
+From cd7f9f7d48ab79c9d59633ed86f0260d4b6886b6 Mon Sep 17 00:00:00 2001
 From: Andy Lutomirski <luto@kernel.org>
 Date: Thu, 28 May 2020 16:13:48 -0400
-Subject: [PATCH 02/22] x86/cpu: Add 'unsafe_fsgsbase' to enable CR4.FSGSBASE
+Subject: [PATCH 02/24] x86/cpu: Add 'unsafe_fsgsbase' to enable CR4.FSGSBASE
 
 This is temporary.  It will allow the next few patches to be tested
 incrementally.
@@ -11,24 +11,22 @@ Setting unsafe_fsgsbase is a root hole.  Don't do it.
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Andi Kleen <ak@linux.intel.com>
 Reviewed-by: Andy Lutomirski <luto@kernel.org>
-Cc: Ravi Shankar <ravi.v.shankar@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
 Link: https://lkml.kernel.org/r/1557309753-24073-4-git-send-email-chang.seok.bae@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20200528201402.1708239-3-sashal@kernel.org
 ---
  .../admin-guide/kernel-parameters.txt         |  3 +++
  arch/x86/kernel/cpu/common.c                  | 24 +++++++++++++++++++
  2 files changed, 27 insertions(+)
 
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 7bc83f3d9bdf..af3aaade195b 100644
+index c49741530..bd140321e 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3033,6 +3033,9 @@
+@@ -3079,6 +3079,9 @@
  	no5lvl		[X86-64] Disable 5-level paging mode. Forces
  			kernel to use 4-level paging instead.
  
@@ -39,10 +37,10 @@ index 7bc83f3d9bdf..af3aaade195b 100644
  			[HW] Never suspend the console
  			Disable suspending of consoles during suspend and
 diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index bed0cb83fe24..4224760c74e2 100644
+index 95c090a45..dd18e7859 100644
 --- a/arch/x86/kernel/cpu/common.c
 +++ b/arch/x86/kernel/cpu/common.c
-@@ -418,6 +418,22 @@ static void __init setup_cr_pinning(void)
+@@ -441,6 +441,22 @@ static void __init setup_cr_pinning(void)
  	static_key_enable(&cr_pinning.key);
  }
  
@@ -65,7 +63,7 @@ index bed0cb83fe24..4224760c74e2 100644
  /*
   * Protection Keys are not available in 32-bit mode.
   */
-@@ -1478,6 +1494,14 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+@@ -1495,6 +1511,14 @@ static void identify_cpu(struct cpuinfo_x86 *c)
  	setup_smap(c);
  	setup_umip(c);
  
@@ -81,5 +79,5 @@ index bed0cb83fe24..4224760c74e2 100644
  	 * The vendor-specific functions might have changed features.
  	 * Now we do "generic changes."
 -- 
-2.27.0.221.ga08a83db2b
+2.28.0.89.g85b4e0a6dc
 

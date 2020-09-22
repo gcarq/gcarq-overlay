@@ -1,7 +1,7 @@
-From 9aeb607c684b8b6c547033668ad0a43de0186646 Mon Sep 17 00:00:00 2001
+From 9e5ed689f2e863ce188b4867bcaf4454f17d88c8 Mon Sep 17 00:00:00 2001
 From: Andy Lutomirski <luto@kernel.org>
 Date: Wed, 24 Jun 2020 17:48:40 -0700
-Subject: [PATCH 22/22] x86/fsgsbase: Fix Xen PV support
+Subject: [PATCH 22/24] x86/fsgsbase: Fix Xen PV support
 
 On Xen PV, SWAPGS doesn't work.  Teach __rdfsbase_inactive() and
 __wrgsbase_inactive() to use rdmsrl()/wrmsrl() on Xen PV.  The Xen
@@ -17,10 +17,10 @@ Signed-off-by: Andy Lutomirski <luto@kernel.org>
  1 file changed, 14 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index b4e56f82788c..86b2eeb7c17c 100644
+index cb8e37d3a..457d02aa1 100644
 --- a/arch/x86/kernel/process_64.c
 +++ b/arch/x86/kernel/process_64.c
-@@ -161,9 +161,13 @@ static noinline unsigned long __rdgsbase_inactive(void)
+@@ -163,9 +163,13 @@ static noinstr unsigned long __rdgsbase_inactive(void)
  
  	lockdep_assert_irqs_disabled();
  
@@ -37,7 +37,7 @@ index b4e56f82788c..86b2eeb7c17c 100644
  
  	return gsbase;
  }
-@@ -178,9 +182,13 @@ static noinline void __wrgsbase_inactive(unsigned long gsbase)
+@@ -182,9 +186,13 @@ static noinstr void __wrgsbase_inactive(unsigned long gsbase)
  {
  	lockdep_assert_irqs_disabled();
  
@@ -52,8 +52,8 @@ index b4e56f82788c..86b2eeb7c17c 100644
 +		wrmsrl(MSR_KERNEL_GS_BASE, gsbase);
 +	}
  }
- NOKPROBE_SYMBOL(__wrgsbase_inactive);
  
+ /*
 -- 
-2.27.0.221.ga08a83db2b
+2.28.0.89.g85b4e0a6dc
 
