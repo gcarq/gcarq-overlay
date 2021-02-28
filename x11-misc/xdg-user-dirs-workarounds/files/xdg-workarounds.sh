@@ -7,7 +7,7 @@
 [ -z "${XDG_DATA_HOME}" ] && export XDG_DATA_HOME="${HOME}/.local/share"
 
 # Program specific overrides
-export ANDROID_SDK_HOME="${XDG_CONFIG_HOME}/android"
+export ANDROID_SDK_ROOT="${XDG_CONFIG_HOME}/android"
 export ADB_VENDOR_KEY="${XDG_CONFIG_HOME}/android"
 export ATOM_HOME="${XDG_DATA_HOME}/atom"
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
