@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Foundation
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -11,7 +11,7 @@ EGIT_REPO_URI="https://github.com/gcarq/${PN}.git"
 LICENSE="GPL-3"
 
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~hppa ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
+KEYWORDS="~amd64 ~arm ~ppc ~s390 ~sparc ~x86"
 IUSE=""
 
 DEPEND=""
