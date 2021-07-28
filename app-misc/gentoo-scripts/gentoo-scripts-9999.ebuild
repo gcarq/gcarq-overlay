@@ -17,7 +17,6 @@ IUSE=""
 DEPEND=""
 RDEPEND="
 	app-portage/portage-utils
-	app-portage/portpeek
 	sys-boot/grub
 	sys-devel/make
 	sys-kernel/dracut"
