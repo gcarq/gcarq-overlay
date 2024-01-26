@@ -17,9 +17,7 @@ IUSE=""
 DEPEND=""
 RDEPEND="
 	app-portage/portage-utils
-	sys-boot/grub
-	sys-devel/make
-	sys-kernel/dracut"
+	sys-kernel/installkernel"
 
 DOCS=( README.md LICENSE.md )
 
