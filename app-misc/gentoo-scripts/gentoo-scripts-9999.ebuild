@@ -11,7 +11,6 @@ EGIT_REPO_URI="https://github.com/gcarq/${PN}.git"
 LICENSE="GPL-3"
 
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~ppc ~s390 ~sparc ~x86"
 
 RDEPEND="
 	app-portage/portage-utils
