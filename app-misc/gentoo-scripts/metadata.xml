@@ -5,11 +5,7 @@
 		<email>egger.m@protonmail.com</email>
 		<name>Michael Egger</name>
 	</maintainer>
-	<longdescription>
-		Collection of personal Gentoo scripts to automate certain things.
-	</longdescription>
 	<upstream>
-		<bugs-to>https://github.com/gcarq/gentoo-scripts/issues</bugs-to>
-		<doc>https://github.com/gcarq/gentoo-scripts/blob/master/README.md</doc>
+		<remote-id type="github">gcarq/gentoo-scripts</remote-id>
 	</upstream>
 </pkgmetadata>
